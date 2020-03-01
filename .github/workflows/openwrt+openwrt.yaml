@@ -1,9 +1,8 @@
 name: openwrt/openwrt
 
 on:
-  push:
-    paths:
-      - '.github/workflows/openwrt+openwrt.yaml'
+  watch:
+    types: [started]
   schedule:
     - cron: '22 * * * *'
 

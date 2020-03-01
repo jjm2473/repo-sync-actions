@@ -1,9 +1,8 @@
 name: coolsnowwolf/lede
 
 on:
-  push:
-    paths:
-      - '.github/workflows/coolsnowwolf+lede.yaml'
+  watch:
+    types: [started]
   schedule:
     - cron: '50 * * * *'
 
