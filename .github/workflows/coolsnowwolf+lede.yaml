@@ -9,17 +9,14 @@ jobs:
     name: Sync
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: 'coolsnowwolf/lede'
-          fetch-depth: 5
-      - name: User Name
-        run: git config user.email "$USER@$HOSTNAME" && git config user.name "$USER"
+      - name: Clone
+        run: git clone --mirror --no-single-branch --depth=5 $SRC_REPO repo.git
+        env:
+          SRC_REPO: https://github.com/coolsnowwolf/lede.git
       - name: Config DownStream
-        run: git remote add downstream "$PUSH_TARGET_PREFIX/lede.git"
+        run: git -C repo.git remote add downstream "$PUSH_TARGET_PREFIX/lede.git"
         env:
           PUSH_TARGET_PREFIX: ${{ secrets.PUSH_TARGET_PREFIX }}
       - name: Push DownStream
-        run: git push downstream
+        run: git -C repo.git push downstream
 
