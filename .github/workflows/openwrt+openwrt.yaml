@@ -21,5 +21,5 @@ jobs:
         env:
           PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/openwrt.git
       - name: Push DownStream
-        run: git -C repo.git push downstream
+        run: git -C repo.git push --mirror downstream
 
