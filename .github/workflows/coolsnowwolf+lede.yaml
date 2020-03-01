@@ -20,6 +20,8 @@ jobs:
         run: git -C repo.git remote add downstream "$PUSH_TARGET"
         env:
           PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/lede.git
-      - name: Push DownStream
-        run: git -C repo.git push --mirror downstream
+      - name: Push DownStream Branchs
+        run: git -C repo.git push --all downstream
+      - name: Push DownStream Tags
+        run: git -C repo.git push --tags downstream
 
