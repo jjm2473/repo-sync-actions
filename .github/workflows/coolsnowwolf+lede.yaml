@@ -10,13 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone
-        run: git clone --mirror --no-single-branch --depth=5 $SRC_REPO repo.git
+        run: git clone --mirror --no-single-branch --depth=$DEPTH $SRC_REPO repo.git
         env:
           SRC_REPO: https://github.com/coolsnowwolf/lede.git
+          DEPTH: 5
       - name: Config DownStream
-        run: git -C repo.git remote add downstream "$PUSH_TARGET_PREFIX/lede.git"
+        run: git -C repo.git remote add downstream "$PUSH_TARGET"
         env:
-          PUSH_TARGET_PREFIX: ${{ secrets.PUSH_TARGET_PREFIX }}
+          PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/lede.git
       - name: Push DownStream
         run: git -C repo.git push downstream
 
