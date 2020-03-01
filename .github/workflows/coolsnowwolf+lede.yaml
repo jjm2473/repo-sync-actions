@@ -1,6 +1,7 @@
 name: coolsnowwolf/lede
 
 on:
+  push:
   schedule:
     - cron: '50 * * * *'
 
