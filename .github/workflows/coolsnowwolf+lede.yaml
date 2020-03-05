@@ -24,5 +24,9 @@ jobs:
         run: git -C repo.git push --all downstream && git -C repo.git push --tags downstream
       - name: Try Unshallow On Failed
         if: failure()
-        run: git -C repo.git fetch --unshallow && git -C repo.git push --mirror downstream
+        run: |
+          git -C repo.git fetch --unshallow || exit 1 
+          git -C repo.git gc
+          git -C repo.git count-objects -vH
+          git -C repo.git push --all downstream && git -C repo.git push --tags downstream
 
