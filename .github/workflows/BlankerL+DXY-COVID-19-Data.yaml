@@ -3,8 +3,8 @@ name: BlankerL/DXY-COVID-19-Data
 on:
   watch:
     types: [started]
-  schedule:
-    - cron: '50 * * * *'
+#  schedule:
+#    - cron: '50 * * * *'
 
 jobs:
   sync:
