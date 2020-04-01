@@ -1,10 +1,10 @@
-name: openwrt/luci
+name: openwrt/packages
 
 on:
   watch:
     types: [started]
   schedule:
-    - cron: '24 * * * *'
+    - cron: '23 * * * *'
 
 jobs:
   sync:
@@ -14,12 +14,12 @@ jobs:
       - name: Clone
         run: git clone --mirror --no-single-branch --depth=$DEPTH $SRC_REPO repo.git
         env:
-          SRC_REPO: https://github.com/openwrt/luci.git
+          SRC_REPO: https://github.com/openwrt/packages.git
           DEPTH: 20
       - name: Config DownStream
         run: git -C repo.git remote add downstream "$PUSH_TARGET"
         env:
-          PUSH_TARGET: ${{ secrets.PUSH_MIRROR_PREFIX }}/luci.git
+          PUSH_TARGET: ${{ secrets.PUSH_MIRROR_PREFIX }}/packages.git
       - name: Push DownStream
         run: git -C repo.git push --all downstream && git -C repo.git push --tags downstream
       - name: Try Unshallow On Failed
