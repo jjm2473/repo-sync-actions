@@ -7,8 +7,8 @@ on:
     - cron: '12 * * * *'
 
 jobs:
-  sync:
-    name: Sync
+  iptv:
+    name: Sync iptv
     runs-on: ubuntu-latest
     steps:
       - name: Clone
@@ -20,6 +20,29 @@ jobs:
         run: git -C repo.git remote add downstream "$PUSH_TARGET"
         env:
           PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/iptv.git
+      - name: Push DownStream
+        run: git -C repo.git push --all downstream && git -C repo.git push --tags downstream
+      - name: Try Unshallow On Failed
+        if: failure()
+        run: |
+          git -C repo.git fetch --unshallow || exit 1 
+          git -C repo.git gc
+          git -C repo.git count-objects -vH
+          git -C repo.git push -f --all downstream && git -C repo.git push -f --tags downstream
+
+  awesome-iptv:
+    name: Sync awesome-iptv
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        run: git clone --mirror --no-single-branch --depth=$DEPTH $SRC_REPO repo.git
+        env:
+          SRC_REPO: https://github.com/iptv-org/awesome-iptv.git
+          DEPTH: 20
+      - name: Config DownStream
+        run: git -C repo.git remote add downstream "$PUSH_TARGET"
+        env:
+          PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/awesome-iptv.git
       - name: Push DownStream
         run: git -C repo.git push --all downstream && git -C repo.git push --tags downstream
       - name: Try Unshallow On Failed
