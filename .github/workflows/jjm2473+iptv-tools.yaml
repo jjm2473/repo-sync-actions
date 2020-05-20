@@ -1,0 +1,31 @@
+name: jjm2473/iptv-tools
+
+on:
+  watch:
+    types: [started]
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  iptv:
+    name: Sync iptv-tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        run: git clone --mirror --no-single-branch --depth=$DEPTH $SRC_REPO repo.git
+        env:
+          SRC_REPO: https://github.com/jjm2473/iptv-tools.git
+          DEPTH: 5
+      - name: Config DownStream
+        run: git -C repo.git remote add downstream "$PUSH_TARGET"
+        env:
+          PUSH_TARGET: ${{ secrets.PUSH_TARGET_PREFIX }}/iptv-tools.git
+      - name: Push DownStream
+        run: git -C repo.git push -f --all downstream && git -C repo.git push --tags downstream
+      - name: Try Unshallow On Failed
+        if: failure()
+        run: |
+          git -C repo.git fetch --unshallow || exit 1 
+          git -C repo.git gc
+          git -C repo.git count-objects -vH
+          git -C repo.git push -f --all downstream && git -C repo.git push -f --tags downstream
