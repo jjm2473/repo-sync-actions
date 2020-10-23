@@ -3,8 +3,6 @@ name: iptv-org/iptv
 on:
   watch:
     types: [started]
-  schedule:
-    - cron: '12 * * * *'
 
 jobs:
   iptv:
