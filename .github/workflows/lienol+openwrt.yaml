@@ -28,5 +28,5 @@ jobs:
           git -C repo.git fetch --unshallow || exit 1 
           git -C repo.git gc
           git -C repo.git count-objects -vH
-          git -C repo.git push --all downstream && git -C repo.git push --tags downstream
+          git -C repo.git push -f --all downstream && git -C repo.git push -f --tags downstream
 
