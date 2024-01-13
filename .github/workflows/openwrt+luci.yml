@@ -21,7 +21,9 @@ jobs:
         env:
           PUSH_TARGET: ${{ secrets.PUSH_MIRROR_PREFIX }}/luci.git
       - name: Push DownStream
-        run: git -C repo.git push --all downstream && git -C repo.git push --tags downstream
+        run: |
+          git -C repo.git push --all downstream || git -C repo.git push --all downstream
+          git -C repo.git push --tags downstream
       - name: Try Unshallow On Failed
         if: failure()
         run: |
